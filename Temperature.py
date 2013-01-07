@@ -1,9 +1,16 @@
 #!/usr/bin/python 
+##################################################################
+## Temperature.py                                               ##
+## A simple class to read from a DS1820 digital thermometer     ##
+##################################################################
 
 import re
 
 
 class Temperature:
+    """
+    Temperature class to read data from the w1 bus on the board 
+    """
     __sensor_path__ = '/sys/bus/w1/devices/{0}/w1_slave'
 
     def open_sensor(self):
