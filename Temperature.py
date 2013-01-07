@@ -3,14 +3,29 @@
 ## Temperature.py                                               ##
 ## A simple class to read from a DS1820 digital thermometer     ##
 ##################################################################
+## Application usage:                                           ##
+## usage: Temperature.py [-h] [-m] [-f] sensor_id               ##
+##                                                              ##
+##    positional arguments:                                     ##
+##      sensor_id        The id of the sensor to read           ##
+##                                                              ##
+##    optional arguments:                                       ##
+##      -h, --help       show this help message and exit        ##
+##      -m, --monitor    Monitor the sensor continuously        ##
+##      -f, --farenheit  Display units in Farenheit rather than ## 
+##                       Celcius                                ##
+##################################################################
 
 import re
+
 
 
 class Temperature:
     """
     Temperature class to read data from the w1 bus on the board 
+    The class takes one argument at instantiation: The id of the sensor
     """
+
     __sensor_path__ = '/sys/bus/w1/devices/{0}/w1_slave'
 
     def open_sensor(self):
@@ -71,3 +86,9 @@ if __name__ == '__main__':
                 print '\r',
             except KeyboardInterrupt:
                 sys.exit(0)
+    else:
+        T = temp_sensor.GetTemperature(args.farenheit)
+        print "{0:.2f} deg {1}".format(
+                T,
+                ('F' if args.farenheit else 'C')
+                )
