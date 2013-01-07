@@ -35,6 +35,7 @@ class Temperature:
             self.sensor = open(self.__sensor_path__.format(self.sensor_id),'r')
         except IOError:
             print 'Unable to open {0} for reading'.format(self.sensor_id)
+            sys.exit(1)
 
     def close_sensor(self):
         self.sensor.close()
@@ -73,14 +74,17 @@ if __name__ == '__main__':
     
     args = parser.parse_args()
 
+    display_temperature = lambda x: "{0:.2f} deg {1}".format(x, ("F" if args.farenheit else "C"))
+
     temp_sensor = Temperature(args.sensor_id)
+    print "Monitoring sensor {0}".format(args.sensor_id)
+
     if (args.monitor):
         while(1):
             try:
+                print '\r',
                 T = temp_sensor.GetTemperature(args.farenheit)
-                print "Current Temperature: {0:.2f} deg {1}".format(T, 
-                        ('F' if args.farenheit else 'C')
-                ),
+                print display_temperature(T),
                 time.sleep(1)
                 sys.stdout.flush()
                 print '\r',
@@ -88,7 +92,4 @@ if __name__ == '__main__':
                 sys.exit(0)
     else:
         T = temp_sensor.GetTemperature(args.farenheit)
-        print "{0:.2f} deg {1}".format(
-                T,
-                ('F' if args.farenheit else 'C')
-                )
+        print display_temperature(T)
