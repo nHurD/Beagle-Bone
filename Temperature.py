@@ -85,7 +85,6 @@ if __name__ == '__main__':
                 print '\r',
                 T = temp_sensor.GetTemperature(args.farenheit)
                 print display_temperature(T),
-                time.sleep(1)
                 sys.stdout.flush()
                 print '\r',
             except KeyboardInterrupt:
